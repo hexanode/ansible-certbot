@@ -1,0 +1,19 @@
+---
+
+# Copyright (c) 2018 Kabolt
+# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+- name: "Remove domain renewal configuration for {{ item }}"
+  file:
+    path: "/etc/letsencrypt/renewal/{{ item }}.conf"
+    state: absent
+
+- name: "Remove domain live files for {{ item }}"
+  file:
+    path: "/etc/letsencrypt/live/{{ item }}/"
+    state: absent
+
+- name: "Remove domain archives files for {{ item }}"
+  file:
+    path: "/etc/letsencrypt/archive/{{ item }}/"
+    state: absent

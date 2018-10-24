@@ -3,6 +3,13 @@
 # Copyright (c) 2018 Kabolt
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+# Remove specific domains
+- name: Remove specific domains
+  include_tasks: remove-domains.yml
+  tags: certbot_remove-domains
+  when: cerbot_remove_domains | length > 0
+  with_items: "{{ cerbot_remove_domains }}"
+
 # Cron
 - name: Static import of cron
   import_tasks: cron.yml
