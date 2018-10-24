@@ -7,7 +7,7 @@
   cron:
     name: Certbot automatic renewal
     user: "{{ certbot_cron_user }}"
-    job: "{{ certbot_executable }} renew {{ certbot_autorenew_options }}"
+    job: "{{ certbot_cron_executable }} renew {{ certbot_cron_autorenew_options }}"
     minute: "{{ certbot_cron_minute }}"
     hour: "{{ certbot_cron_hour }}"
     day: "{{ certbot_cron_dayofmonth }}"

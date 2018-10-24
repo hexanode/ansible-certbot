@@ -15,6 +15,6 @@ certbot_cron_autorenew_options: "--quiet --no-self-upgrade"     # Options for a
 certbot_cron_user: root                                         # User for the cron job
 certbot_cron_minute: 30                                         # minute for the execution cron job (Use cron syntax)
 certbot_cron_hour: 5                                            # hour for the execution cron job (Use cron syntax)
-certbot_cron_dayofmonth: *                                      # day of month for the execution cron job (Use cron syntax)
-certbot_cron_month: *                                           # month for the execution cron job (Use cron syntax)
-certbot_cron_dayofweek: *                                       # day of week for the execution cron job (Use cron syntax)
+certbot_cron_dayofmonth: '*'                                    # day of month for the execution cron job (Use cron syntax)
+certbot_cron_month: '*'                                         # month for the execution cron job (Use cron syntax)
+certbot_cron_dayofweek: '*'                                     # day of week for the execution cron job (Use cron syntax)
