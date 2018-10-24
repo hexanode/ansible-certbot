@@ -3,3 +3,11 @@
 # Copyright (c) 2018 Kabolt
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+# Install Certbot package from debian stable repository
+- name: Install required Certbot package
+  apt:
+    name: "{{ certbot_package }}"
+    state: "{{ certbot_package_state }}"
+    update_cache: yes
+    install_recommends: no
+    cache_valid_time: 86400
