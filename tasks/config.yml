@@ -10,6 +10,14 @@
   when: cerbot_remove_domains | length > 0
   with_items: "{{ cerbot_remove_domains }}"
 
+# Generate certificates
+- name: Dynamic import of generate-certificates
+  include_tasks: generate-certificates.yml
+  when: certbot_domains | length > 0
+  with_items: "{{ certbot_domains }}"
+  loop_control:
+    loop_var: cert_item
+
 # Cron
 - name: Static import of cron
   import_tasks: cron.yml

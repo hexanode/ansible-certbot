@@ -1,0 +1,35 @@
+---
+
+# Copyright (c) 2018 Kabolt
+# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+- name: "Check if certificate already exists for {{ cert_item.domains | first }}"
+  stat:
+    path: "/etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem"
+  register: certificate
+
+- name: Stop services to let certbot generate a certificate
+  service:
+    name: "{{ item }}"
+    state: stopped
+  when:
+    - not certificate.stat.exists
+    - certbot_standalone_stop_services | length > 0
+  with_items: "{{ certbot_standalone_stop_services }}"
+
+- name: "Generate new certificate in standalone mode for {{ cert_item.domains | first }}"
+  shell: "{{ certbot_standalone_gen_command }}"
+  when:
+    - not certificate.stat.exists
+    - cert_item.mode is undefined or (cert_item.mode is defined and cert_item.mode == 'standalone')
+
+- name: Start services after certificates generation
+  service:
+    name: "{{ item }}"
+    state: started
+  when:
+    - not certificate.stat.exists
+    - certbot_standalone_stop_services | length > 0
+  with_items: "{{ certbot_standalone_stop_services }}"
+
+#certbot certonly --standalone -d app.oecko.com -d api.oecko.com --non-interactive --agree-tos --email sysadmin@kabolt.fr --http-01-port=8888 --preferred-challenges=http-01
