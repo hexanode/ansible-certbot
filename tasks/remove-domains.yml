@@ -3,17 +3,15 @@
 # Copyright (c) 2018 Kabolt
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-- name: "Remove domain renewal configuration for {{ item }}"
-  file:
-    path: "/etc/letsencrypt/renewal/{{ item }}.conf"
-    state: absent
+- name: "Check if certificate already exists for {{ item }}"
+  stat:
+    path: "/etc/letsencrypt/live/{{ item }}/cert.pem"
+  register: certificate_revoke
 
-- name: "Remove domain live files for {{ item }}"
-  file:
-    path: "/etc/letsencrypt/live/{{ item }}/"
-    state: absent
+- name: "Revoke certificate for {{ item }}"
+  shell: "{{ certbot_executable }} revoke --cert-path /etc/letsencrypt/live/{{ item }}/cert.pem"
+  when: certificate_revoke.stat.exists
 
-- name: "Remove domain archives files for {{ item }}"
-  file:
-    path: "/etc/letsencrypt/archive/{{ item }}/"
-    state: absent
+- name: "Delete certificate for {{ item }}"
+  shell: "{{ certbot_executable }} delete --cert-name {{ item }}"
+  when: certificate_revoke.stat.exists
