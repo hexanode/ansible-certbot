@@ -74,6 +74,13 @@ certbot_domains:
     mode: standalone
     email: letsencrypt@example.com
 
+  # Single domain in standalone mode with a custom http-01 port (Use full for certbot standalone mode behind a reverse proxy). Preferred challenges can also be customized, if missing the default value is http-01.
+  - domains: [ 'example.com' ]
+    mode: standalone
+    http01port: 8888
+    preferredchallenges: http-01
+    email: letsencrypt@example.com
+
   # Multiples domains in standalone mode (Note : The first domain, example.com, is the "primary" domain, it is used to define a letsencrypt configuration file name, you should use the same for remove domains)
   - domains: [ 'example.com', 'sub.example.com', 'example.fr' ]
     mode: standalone
