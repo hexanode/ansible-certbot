@@ -61,6 +61,33 @@ certbot_package_state: false
 ```
 
 
+## Certificates generation syntax
+
+*Note :* For now, the current configuration of a certificate renewal is not updated, per example if you want to add a new domain in the same certificate you should remove the previous certificate with `cerbot_remove_domains` and update the `certbot_domains` configuration.
+
+Here is differents ways to generate certificates :
+
+```
+certbot_domains:
+  # Single domain in standalone mode
+  - domains: [ 'example.com' ]
+    mode: standalone
+    email: letsencrypt@example.com
+
+  # Multiples domains in standalone mode (Note : The first domain, example.com, is the "primary" domain, it is used to define a letsencrypt configuration file name, you should use the same for remove domains)
+  - domains: [ 'example.com', 'sub.example.com', 'example.fr' ]
+    mode: standalone
+    email: letsencrypt@example.com
+
+  # Single domain in webroot mode
+  - domains: [ 'example.com' ]
+    mode: webroot
+    webroot: '/var/www/html/'
+    email: letsencrypt@example.com
+
+    ...
+```
+
 ## Auto Renewal of letsencrypt certificates
 
 In order to renew automaticaly the certificates a cron is set to execute a quiet renewal based on renewal configuration. This run by default every day at 5h30.

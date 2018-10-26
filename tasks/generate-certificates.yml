@@ -23,6 +23,12 @@
     - not certificate.stat.exists
     - cert_item.mode is undefined or (cert_item.mode is defined and cert_item.mode == 'standalone')
 
+- name: "Generate new certificate in webroot mode for {{ cert_item.domains | first }}"
+  shell: "{{ certbot_webroot_gen_command }}"
+  when:
+    - not certificate.stat.exists
+    - cert_item.mode is defined and cert_item.mode == 'webroot'
+
 - name: Start services after certificates generation
   service:
     name: "{{ item }}"
@@ -31,5 +37,3 @@
     - not certificate.stat.exists
     - certbot_standalone_stop_services | length > 0
   with_items: "{{ certbot_standalone_stop_services }}"
-
-#certbot certonly --standalone -d app.oecko.com -d api.oecko.com --non-interactive --agree-tos --email sysadmin@kabolt.fr --http-01-port=8888 --preferred-challenges=http-01

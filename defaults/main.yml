@@ -30,6 +30,14 @@ certbot_standalone_gen_command: >-
     --cert-name {{ cert_item.domains | first | replace('*.', '') }}
     -d {{ cert_item.domains | join(',') }}
 
+# Command used for certificate generation in webroot mode
+certbot_webroot_gen_command: >-
+    {{ certbot_executable }} certonly --webroot --noninteractive
+    --agree-tos --email {{ cert_item.email | default(certbot_email) }}
+    -w {{ cert_item.webroot }}
+    --cert-name {{ cert_item.domains | first | replace('*.', '') }}
+    -d {{ cert_item.domains | join(',') }}
+
 # Auto-renew cron
 certbot_cron_autorenew: true                # Set false in order to disable certbot autorenew cron
 certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
