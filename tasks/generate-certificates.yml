@@ -5,7 +5,7 @@
 
 - name: "Check if certificate already exists for {{ cert_item.domains | first }}"
   stat:
-    path: "/etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem"
+    path: "/etc/letsencrypt/live/{{ cert_item.domains | first }}/cert.pem"
   register: certificate
 
 - name: Stop services to let certbot generate a certificate
@@ -37,3 +37,10 @@
     - not certificate.stat.exists
     - certbot_standalone_stop_services | length > 0
   with_items: "{{ certbot_standalone_stop_services }}"
+
+- name: "Certificate concatenation for {{ cert_item.domains | first }}"
+  shell: "cat /etc/letsencrypt/live/{{ cert_item.domains | first }}/fullchain.pem /etc/letsencrypt/live/{{ cert_item.domains | first }}/privkey.pem > {{ cert_item.concatenate }}"
+  when:
+    - not certificate.stat.exists
+    - cert_item.concatenate is defined
+    - cert_item.concatenate | length > 0
