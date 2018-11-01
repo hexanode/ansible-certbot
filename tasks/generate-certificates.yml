@@ -8,6 +8,21 @@
     path: "/etc/letsencrypt/live/{{ cert_item.domains | first }}/cert.pem"
   register: certificate
 
+- name: Set custom pre and post hook in standalone mode for {{ cert_item.domains | first }}
+  set_fact:
+    certbot_standalone_gen_command_custom_preposthook: --pre-hook "bash -c \"for service in {{ certbot_standalone_stop_services | join(' ') }} ; systemctl stop \$service ; done\"" --post-hook "bash -c \"for service in {{ certbot_standalone_stop_services | join(' ') }} ; systemctl start \$service ; done\""
+  when:
+    - not certificate.stat.exists
+    - certbot_standalone_stop_services | length > 0
+
+- name: Set custom renew hook in standalone mode for {{ cert_item.domains | first }}
+  set_fact:
+    certbot_standalone_gen_command_custom_renewhook: --renew-hook "/bin/cat /etc/letsencrypt/live/{{ cert_item.domains | first }}/fullchain.pem /etc/letsencrypt/live/{{ cert_item.domains | first }}/privkey.pem > {{ cert_item.concatenate }}"
+  when:
+    - not certificate.stat.exists
+    - cert_item.concatenate is defined
+    - cert_item.concatenate | length > 0
+
 - name: Stop services to let certbot generate a certificate
   service:
     name: "{{ item }}"

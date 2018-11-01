@@ -29,6 +29,8 @@ certbot_standalone_gen_command: >-
     --preferred-challenges={{ cert_item.preferredchallenges | default(certbot_default_preferredchallenges) }}
     --cert-name {{ cert_item.domains | first | replace('*.', '') }}
     -d {{ cert_item.domains | join(',') }}
+    {{ certbot_standalone_gen_command_custom_preposthook | default('') }}
+    {{ certbot_standalone_gen_command_custom_renewhook | default('') }}
 
 # Command used for certificate generation in webroot mode
 certbot_webroot_gen_command: >-
