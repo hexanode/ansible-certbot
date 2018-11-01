@@ -27,22 +27,34 @@ Modifiables variables and possible values are listed below :
 
 ```
 # Installation
-certbot_package: certbot            # Package name to be installed, default is certbot for debian
-certbot_package_state: latest       # State of the package, 'default' is latest in order to keep certbot updated, use 'present' in order to install it once and keep the current version
+certbot_package: certbot                    # Package name to be installed, default is certbot for debian
+certbot_package_state: latest               # State of the package, 'default' is latest in order to keep certbot updated, use 'present' in order to install it once and keep the current version
+
+# Common
+certbot_executable: certbot                 # Executable name to be used in script generation and cron
+
+# Certificates generation
+certbot_default_generate_mode: standalone   # Required mode generation for this certificates
+certbot_default_email: mail@example.com     # Email for letsencrypt notifications
+certbot_domains: []                         # List of dictionnary containing domains & options for certificates generation (See README.md)
+
+certbot_default_http01port: 80
+certbot_default_preferredchallenges: http-01
+
+certbot_standalone_stop_services: []        # List of services required to stop during standalone certificates generation (ex: [ 'nginx', 'apache', 'haproxy', 'varnish' ])
 
 # Auto-renew cron
-certbot_cron_autorenew: true        # Set false in order to disable certbot autorenew cron
-certbot_cron_executable: certbot    # Executable name to be used in cron
+certbot_cron_autorenew: true                # Set false in order to disable certbot autorenew cron
 certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
-certbot_cron_user: root             # User for the cron job
-certbot_cron_minute: 30             # minute for the execution cron job (Use cron syntax)
-certbot_cron_hour: 5                # hour for the execution cron job (Use cron syntax)
-certbot_cron_dayofmonth: '*'        # day of month for the execution cron job (Use cron syntax)
-certbot_cron_month: '*'             # month for the execution cron job (Use cron syntax)
-certbot_cron_dayofweek: '*'         # day of week for the execution cron job (Use cron syntax)
+certbot_cron_user: root                     # User for the cron job
+certbot_cron_minute: 30                     # minute for the execution cron job (Use cron syntax)
+certbot_cron_hour: 5                        # hour for the execution cron job (Use cron syntax)
+certbot_cron_dayofmonth: '*'                # day of month for the execution cron job (Use cron syntax)
+certbot_cron_month: '*'                     # month for the execution cron job (Use cron syntax)
+certbot_cron_dayofweek: '*'                 # day of week for the execution cron job (Use cron syntax)
 
 # Domains to remove
-cerbot_remove_domains: []           # A list of domains to remove, ex [ 'example.com', 'example.fr' ]
+cerbot_remove_domains: []                   # A list of domains to remove, ex [ 'example.com', 'example.net' ]
 ```
 
 ## Dependencies
@@ -50,7 +62,7 @@ cerbot_remove_domains: []           # A list of domains to remove, ex [ 'example
 none
 
 
-## Installation
+## Installation
 
 By default the installation of certbot use the official repository. In order to keep the package up to date the package state in ansible is set to latest in the default value.
 
@@ -69,28 +81,26 @@ Here is differents ways to generate certificates :
 
 ```
 certbot_domains:
-  # Single domain in standalone mode
+  # Single domain in standalone mode with custom email
   - domains: [ 'example.com' ]
     mode: standalone
     email: letsencrypt@example.com
 
-  # Single domain in standalone mode with a custom http-01 port (Use full for certbot standalone mode behind a reverse proxy). Preferred challenges can also be customized, if missing the default value is http-01.
+  # Single domain in standalone mode with a custom http-01 port (Use full for certbot standalone mode behind a reverse proxy). Preferred challenges can also be customized, if missing the default value is http-01
   - domains: [ 'example.com' ]
     mode: standalone
     http01port: 8888
     preferredchallenges: http-01
-    email: letsencrypt@example.com
 
   # Multiples domains in standalone mode (Note : The first domain, example.com, is the "primary" domain, it is used to define a letsencrypt configuration file name, you should use the same for remove domains)
   - domains: [ 'example.com', 'sub.example.com', 'example.fr' ]
     mode: standalone
-    email: letsencrypt@example.com
 
-  # Single domain in webroot mode
+  # Single domain in webroot mode with a concatenation for the certificate in a specific file
   - domains: [ 'example.com' ]
     mode: webroot
     webroot: '/var/www/html/'
-    email: letsencrypt@example.com
+    concatenation: '/etc/ssl/example_com_combined.pem'
 
     ...
 ```
