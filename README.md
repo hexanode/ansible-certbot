@@ -43,6 +43,25 @@ certbot_default_preferredchallenges: http-01
 
 certbot_standalone_stop_services: []        # List of services required to stop during standalone certificates generation (ex: [ 'nginx', 'apache', 'haproxy', 'varnish' ])
 
+# Command used for certificate generation in standalone mode
+certbot_standalone_gen_command: >-
+    {{ certbot_executable }} certonly --standalone --noninteractive
+    --agree-tos --email {{ cert_item.email | default(certbot_email) }}
+    --http-01-port={{ cert_item.http01port | default(certbot_default_http01port) }}
+    --preferred-challenges={{ cert_item.preferredchallenges | default(certbot_default_preferredchallenges) }}
+    --cert-name {{ cert_item.domains | first | replace('*.', '') }}
+    -d {{ cert_item.domains | join(',') }}
+    {{ certbot_standalone_gen_command_custom_preposthook | default('') }}
+    {{ certbot_standalone_gen_command_custom_renewhook | default('') }}
+
+# Command used for certificate generation in webroot mode
+certbot_webroot_gen_command: >-
+    {{ certbot_executable }} certonly --webroot --noninteractive
+    --agree-tos --email {{ cert_item.email | default(certbot_email) }}
+    -w {{ cert_item.webroot }}
+    --cert-name {{ cert_item.domains | first | replace('*.', '') }}
+    -d {{ cert_item.domains | join(',') }}
+
 # Auto-renew cron
 certbot_cron_autorenew: true                # Set false in order to disable certbot autorenew cron
 certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
@@ -55,6 +74,9 @@ certbot_cron_dayofweek: '*'                 # day of week for the execution cron
 
 # Domains to remove
 cerbot_remove_domains: []                   # A list of domains to remove, ex [ 'example.com', 'example.net' ]
+
+# Cron
+certbot_cron_random_sleep_cmd: '/bin/sleep $(/usr/bin/shuf -i 1-3600 -n 1) && '      # Default sleep command, in order to distribute task in one hour, change to '' in order to disable it
 ```
 
 ## Dependencies

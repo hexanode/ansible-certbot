@@ -7,7 +7,7 @@
   cron:
     name: Certbot automatic renewal
     user: "{{ certbot_cron_user }}"
-    job: "{{ certbot_executable }} renew {{ certbot_cron_autorenew_options }}"
+    job: "{{ certbot_cron_random_sleep_cmd }}{{ certbot_executable }} renew {{ certbot_cron_autorenew_options }}"
     minute: "{{ certbot_cron_minute }}"
     hour: "{{ certbot_cron_hour }}"
     day: "{{ certbot_cron_dayofmonth }}"
@@ -15,6 +15,11 @@
     weekday: "{{ certbot_cron_dayofweek }}"
     cron_file: ansible_cron_cerbot
   when: certbot_cron_autorenew
+
+- name: Disable default cron job from certbot package
+  file:
+    path: /etc/cron.d/certbot
+    state: absent
 
 - name: Disable cron job for certbot renewal
   cron:

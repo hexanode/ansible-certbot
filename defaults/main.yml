@@ -52,3 +52,6 @@ certbot_cron_dayofweek: '*'                 # day of week for the execution cron
 
 # Domains to remove
 cerbot_remove_domains: []                   # A list of domains to remove, ex [ 'example.com', 'example.net' ]
+
+# Cron
+certbot_cron_random_sleep_cmd: '/bin/sleep $(/usr/bin/shuf -i 1-3600 -n 1) && '      # Default sleep command, in order to distribute task in one hour, change to '' in order to disable it
