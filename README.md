@@ -122,7 +122,7 @@ certbot_domains:
   - domains: [ 'example.com' ]
     mode: webroot
     webroot: '/var/www/html/'
-    concatenation: '/etc/ssl/example_com_combined.pem'
+    concatenate: '/etc/ssl/example_com_combined.pem'
 
     ...
 ```
