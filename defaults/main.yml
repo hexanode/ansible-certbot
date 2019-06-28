@@ -4,6 +4,9 @@
 ## Default variables for Certbot role #
 #######################################
 
+# Enabling role
+role_certbot: false
+
 # Installation
 certbot_package: certbot                    # Package name to be installed, default is certbot for debian
 certbot_package_state: latest               # State of the package, 'default' is latest in order to keep certbot updated, use 'present' in order to install it once and keep the current version
