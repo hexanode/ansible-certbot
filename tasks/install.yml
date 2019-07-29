@@ -7,7 +7,7 @@
 - name: Install required Certbot package
   apt:
     name: "{{ certbot_package }}"
-    state: "{{ certbot_package_state }}"
+    state: "{{ certbot_package_state }}"
     update_cache: yes
     install_recommends: no
     cache_valid_time: 86400

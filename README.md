@@ -64,8 +64,8 @@ certbot_webroot_gen_command: >-
 
 # Auto-renew cron
 certbot_cron_autorenew: true                # Set false in order to disable certbot autorenew cron
-certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
-certbot_cron_user: root                     # User for the cron job
+certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
+certbot_cron_user: root                     # User for the cron job
 certbot_cron_minute: 30                     # minute for the execution cron job (Use cron syntax)
 certbot_cron_hour: 5                        # hour for the execution cron job (Use cron syntax)
 certbot_cron_dayofmonth: '*'                # day of month for the execution cron job (Use cron syntax)
@@ -76,7 +76,7 @@ certbot_cron_dayofweek: '*'                 # day of week for the execution cron
 cerbot_remove_domains: []                   # A list of domains to remove, ex [ 'example.com', 'example.net' ]
 
 # Cron
-certbot_cron_random_sleep_cmd: '/bin/sleep $(/usr/bin/shuf -i 1-3600 -n 1) && '      # Default sleep command, in order to distribute task in one hour, change to '' in order to disable it
+certbot_cron_random_sleep_cmd: '/bin/sleep $(/usr/bin/shuf -i 1-3600 -n 1) && '      # Default sleep command, in order to distribute task in one hour, change to '' in order to disable it
 ```
 
 ## Dependencies
@@ -136,8 +136,8 @@ You can disable the autorenew or override this value with the classic cron synta
 ```
 certbot_cron_autorenew: true        # Set false in order to disable certbot autorenew cron
 certbot_cron_executable: certbot    # Executable name to be used in cron
-certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
-certbot_cron_user: root             # User for the cron job
+certbot_cron_autorenew_options: "--quiet --no-self-upgrade --noninteractive" # Options for autorenew command in cron
+certbot_cron_user: root             # User for the cron job
 certbot_cron_minute: 30             # minute for the execution cron job (Use cron syntax)
 certbot_cron_hour: 5                # hour for the execution cron job (Use cron syntax)
 certbot_cron_dayofmonth: '*'        # day of month for the execution cron job (Use cron syntax)
