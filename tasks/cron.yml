@@ -14,7 +14,7 @@
     month: "{{ certbot_cron_month }}"
     weekday: "{{ certbot_cron_dayofweek }}"
     cron_file: ansible_cron_cerbot
-  when: certbot_cron_autorenew
+  when: certbot_cron_autorenew|bool
 
 - name: Disable default cron job from certbot package
   file:
@@ -26,4 +26,4 @@
     name: Certbot automatic renewal
     cron_file: ansible_cron_cerbot
     state: absent
-  when: not certbot_cron_autorenew
+  when: not certbot_cron_autorenew|bool
