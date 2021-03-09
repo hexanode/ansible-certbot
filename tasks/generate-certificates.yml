@@ -37,7 +37,7 @@
   when:
     - not certificate.stat.exists
     - cert_item.mode is undefined or (cert_item.mode is defined and cert_item.mode == 'standalone')
-  register: certificate_generation
+  register: certificate_generation_standalone
   ignore_errors: yes
 
 - name: "Generate new certificate in webroot mode for {{ cert_item.domains | first }}"
@@ -45,7 +45,7 @@
   when:
     - not certificate.stat.exists
     - cert_item.mode is defined and cert_item.mode == 'webroot'
-  register: certificate_generation
+  register: certificate_generation_webroot
   ignore_errors: yes
 
 - name: Start services after certificates generation
@@ -63,4 +63,4 @@
     - not certificate.stat.exists
     - cert_item.concatenate is defined
     - cert_item.concatenate | length > 0
-    - certificate_generation.rc == 0
+    - certificate_generation_standalone.rc == 0 or certificate_generation_webroot.rc == 0
