@@ -28,10 +28,13 @@ certbot_standalone_stop_services: []        # List of services required to stop 
 certbot_standalone_gen_command: >-
     {{ certbot_executable }} certonly --standalone --noninteractive
     --agree-tos --email {{ cert_item.email | default(certbot_email) }}
-    --http-01-port={{ cert_item.http01port | default(certbot_default_http01port) }}
-    --preferred-challenges={{ cert_item.preferredchallenges | default(certbot_default_preferredchallenges) }}
+    --http-01-port {{ cert_item.http01port | default(certbot_default_http01port) }}
+    --preferred-challenges {{ cert_item.preferredchallenges | default(certbot_default_preferredchallenges) }}
     --cert-name {{ cert_item.domains | first | replace('*.', '') }}
     -d {{ cert_item.domains | join(',') }}
+    --server {{ certbot_standalone_gen_command_server | default('https://acme-v02.api.letsencrypt.org/directory') }}
+    --eab-kid {{ certbot_standalone_gen_eab_kid | default('') }}
+    --eab-hmac-key {{ certbot_standalone_gen_eab_hmac_key  | default('') }}
     {{ certbot_standalone_gen_command_custom_preposthook | default('') }}
     {{ certbot_standalone_gen_command_custom_renewhook | default('') }}
 
@@ -42,6 +45,11 @@ certbot_webroot_gen_command: >-
     -w {{ cert_item.webroot }}
     --cert-name {{ cert_item.domains | first | replace('*.', '') }}
     -d {{ cert_item.domains | join(',') }}
+    --server {{ certbot_standalone_gen_command_server | default('https://acme-v02.api.letsencrypt.org/directory') }}
+    --eab-kid {{ certbot_standalone_gen_eab_kid | default('') }}
+    --eab-hmac-key {{ certbot_standalone_gen_eab_hmac_key  | default('') }}
+    {{ certbot_standalone_gen_command_custom_preposthook | default('') }}
+    {{ certbot_standalone_gen_command_custom_renewhook | default('') }}
 
 # Auto-renew cron
 certbot_cron_autorenew: true                # Set false in order to disable certbot autorenew cron
