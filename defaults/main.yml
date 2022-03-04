@@ -33,8 +33,8 @@ certbot_standalone_gen_command: >-
     --cert-name {{ cert_item.domains | first | replace('*.', '') }}
     -d {{ cert_item.domains | join(',') }}
     --server {{ certbot_standalone_gen_command_server | default('https://acme-v02.api.letsencrypt.org/directory') }}
-    --eab-kid {{ certbot_standalone_gen_eab_kid | default('') }}
-    --eab-hmac-key {{ certbot_standalone_gen_eab_hmac_key  | default('') }}
+    --eab-kid {{ certbot_standalone_gen_eab_kid | default('None') }}
+    --eab-hmac-key {{ certbot_standalone_gen_eab_hmac_key  | default('None') }}
     {{ certbot_standalone_gen_command_custom_preposthook | default('') }}
     {{ certbot_standalone_gen_command_custom_renewhook | default('') }}
 
@@ -46,8 +46,8 @@ certbot_webroot_gen_command: >-
     --cert-name {{ cert_item.domains | first | replace('*.', '') }}
     -d {{ cert_item.domains | join(',') }}
     --server {{ certbot_standalone_gen_command_server | default('https://acme-v02.api.letsencrypt.org/directory') }}
-    --eab-kid {{ certbot_standalone_gen_eab_kid | default('') }}
-    --eab-hmac-key {{ certbot_standalone_gen_eab_hmac_key  | default('') }}
+    --eab-kid {{ certbot_standalone_gen_eab_kid | default('None') }}
+    --eab-hmac-key {{ certbot_standalone_gen_eab_hmac_key  | default('None') }}
     {{ certbot_standalone_gen_command_custom_preposthook | default('') }}
     {{ certbot_standalone_gen_command_custom_renewhook | default('') }}
 
