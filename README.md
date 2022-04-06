@@ -15,6 +15,7 @@ This ansible role install and configure Certbot. This role can issue certificate
 Compliant with :
 - Debian 9 (Stretch)
 - Debian 10 (Buster)
+- Debian 11 (Bullseye)
 
 Other:
 - The role require the superuser privileges. The task should be used with remote_user root or with a sudo/su grant
